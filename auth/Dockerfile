@@ -1,8 +1,10 @@
-FROM node:lts-alpine
+#FROM node:22.11-alpine
+FROM node:alpine
 
 WORKDIR /app
 COPY package.json .
-RUN npm install # || true # workaround for https://github.com/npm/npm/issues/9863
+#RUN npm install  --force # --loglevel verbose
+RUN npm install --force
 COPY . . 
 
 CMD ["npm", "start"]
