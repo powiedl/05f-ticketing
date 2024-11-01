@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import { body, validationResult } from 'express-validator';
+import { RequestValidationError, DatabaseConnectionError } from '../errors';
 
 const router = express.Router();
 
@@ -16,15 +17,14 @@ router.post(
     const errors = validationResult(req);
 
     if (!errors.isEmpty()) {
-      res.status(400).json({ errors: errors.array() });
-      console.log('signup,this should never be printed ...');
-      return;
+      console.log('signUp - there have been errors');
+      throw new RequestValidationError(errors.array());
     }
     const { email, password } = req.body;
     console.log(email, password);
 
     // new User({email, password});
-
+    throw new DatabaseConnectionError();
     res.send('Sign up route');
   }
 );
