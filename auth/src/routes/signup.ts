@@ -21,7 +21,6 @@ router.post(
       throw new RequestValidationError(errors.array());
     }
     const { email, password } = req.body;
-    console.log(email, password);
 
     // new User({email, password});
     throw new DatabaseConnectionError();
