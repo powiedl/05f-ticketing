@@ -6,12 +6,10 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log('Error handler ...');
   if (err instanceof CustomError) {
-    console.log('ERROR CustomError kicked in ...');
-    res.status(err.statusCode).send({ errors: err.serializeErrors() });
-    return;
+    return res.status(err.statusCode).send({ errors: err.serializeErrors() });
   }
-  res.status(400).send({ errors: [{ message: 'Something went wrong' }] });
-  return;
+  return res
+    .status(400)
+    .send({ errors: [{ message: 'Something went wrong' }] });
 };

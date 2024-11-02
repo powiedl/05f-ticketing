@@ -1,6 +1,9 @@
 import express, { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
-import { RequestValidationError, DatabaseConnectionError } from '../errors';
+import { body } from 'express-validator';
+import { BadRequestError } from '../errors';
+import { validateRequest } from '../middlewares';
+import { User, UserModel } from '../models/users';
+import jwt from 'jsonwebtoken';
 
 const router = express.Router();
 
@@ -13,18 +16,35 @@ router.post(
       .isLength({ min: 4, max: 20 })
       .withMessage('Password must be between 4 and 20 characters'),
   ],
-  (req: Request, res: Response) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      console.log('signUp - there have been errors');
-      throw new RequestValidationError(errors.array());
-    }
+  validateRequest,
+  async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     // new User({email, password});
-    throw new DatabaseConnectionError();
-    res.send('Sign up route');
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      console.log('email in use');
+      throw new BadRequestError('Email already in use');
+    }
+
+    const user = User.build({ email, password });
+    await user.save();
+
+    // generate jwt
+    const userJwt = jwt.sign(
+      {
+        id: user.id,
+        email: user.email,
+      },
+      process.env.JWT_KEY! // mit diesem ! garantieren wir Typescript, dass es eine ENV-Variable mit dem Namen JWT_KEY gibt (weil wir es beim Startup schon geprüft haben)
+    );
+
+    // store it on session object
+    req.session = {
+      jwt: userJwt,
+    };
+
+    res.status(201).send(user);
   }
 );
 
