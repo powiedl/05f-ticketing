@@ -1,0 +1,18 @@
+Hello,
+
+my Image is more than 1GB and I can't figure out, why. 
+
+My Dockerfile:
+
+FROM node:alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install # --force
+COPY . .
+CMD ["npm", "run", "dev"] 
+
+My .dockerignore:
+
+node_modules
+.next
+
