@@ -1,10 +1,12 @@
 import express, { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 
-import { validateRequest } from '../middlewares';
+import {
+  validateRequest,
+  BadRequestError,
+} from '@powidl2024/common__powidl2024';
 import { body } from 'express-validator';
 import { User } from '../models/users';
-import { BadRequestError } from '../errors';
 import { Password } from '../services';
 const router = express.Router();
 

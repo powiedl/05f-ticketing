@@ -13,8 +13,7 @@ import {
   signoutRouter,
   signupRouter,
 } from './routes';
-import { errorHandler } from './middlewares';
-import { NotFoundError } from './errors';
+import { errorHandler, NotFoundError } from '@powidl2024/common__powidl2024';
 
 const app = express();
 app.set('trust proxy', true);

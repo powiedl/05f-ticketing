@@ -1,7 +1,9 @@
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
-import { BadRequestError } from '../errors';
-import { validateRequest } from '../middlewares';
+import {
+  BadRequestError,
+  validateRequest,
+} from '@powidl2024/common__powidl2024';
 import { User, UserModel } from '../models/users';
 import jwt from 'jsonwebtoken';
 
