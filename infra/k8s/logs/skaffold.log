@@ -1,0 +1,113 @@
+Generating tags...
+ - powiedl/ticketing-auth -> powiedl/ticketing-auth:c617707
+ - powiedl/ticketing-tickets -> powiedl/ticketing-tickets:c617707
+ - powiedl/ticketing-client -> powiedl/ticketing-client:c617707
+Checking cache...
+ - powiedl/ticketing-auth: Found. Tagging
+ - powiedl/ticketing-tickets: Found. Tagging
+ - powiedl/ticketing-client: Not found. Building
+Starting build...
+Found [docker-desktop] context, using local docker daemon.
+Building [powiedl/ticketing-client]...
+Target platforms: [linux/amd64]
+#0 building with "desktop-linux" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile: 167B done
+#1 DONE 0.0s
+
+#2 [internal] load metadata for docker.io/library/node:alpine
+#2 DONE 0.0s
+
+#3 [internal] load .dockerignore
+#3 transferring context: 59B done
+#3 DONE 0.0s
+
+#4 [internal] load build context
+#4 transferring context: 772B done
+#4 DONE 0.0s
+
+#5 [1/5] FROM docker.io/library/node:alpine@sha256:1467ea23cce893347696b155b9e00e7f0ac7d21555eb6f27236f1328212e045e
+#5 resolve docker.io/library/node:alpine@sha256:1467ea23cce893347696b155b9e00e7f0ac7d21555eb6f27236f1328212e045e 0.1s done
+#5 DONE 0.1s
+
+#6 [2/5] WORKDIR /app
+#6 CACHED
+
+#7 [3/5] COPY package*.json ./
+#7 CACHED
+
+#8 [4/5] RUN npm install # --force
+#8 CACHED
+
+#9 [5/5] COPY . .
+#9 CACHED
+
+#10 exporting to image
+#10 exporting layers done
+#10 exporting manifest sha256:e6b1f7aacd5e7ec03807575125229d95fa2b67e4d1d50c96894a8fcfcee41992 done
+#10 exporting config sha256:ba3c84ff46f1cecc10814b09847b03488d2c52052accf51d12b83a79454f7cd8 done
+#10 exporting attestation manifest sha256:548da9a633d72c032d52a3f6719d45eb545ee79a1d6c4a9542a70827e968066b
+#10 exporting attestation manifest sha256:548da9a633d72c032d52a3f6719d45eb545ee79a1d6c4a9542a70827e968066b 0.0s done
+#10 exporting manifest list sha256:80817b816ce0db12f47bad583977d9c314baa5db86e8d1e211a06b90ca8c4120 0.0s done
+#10 naming to docker.io/powiedl/ticketing-client:c617707 done
+#10 unpacking to docker.io/powiedl/ticketing-client:c617707
+#10 unpacking to docker.io/powiedl/ticketing-client:c617707 2.1s done
+#10 DONE 2.3s
+
+View build details: docker-desktop://dashboard/build/desktop-linux/desktop-linux/ms69m3sjv9lqrojd2ckctw9u9
+Build [powiedl/ticketing-client] succeeded
+Tags used in deployment:
+ - powiedl/ticketing-auth -> powiedl/ticketing-auth:765f924dd004f42e98ea3d2268f9c64038e89376cc41eb9fcad9af88a59ebebd
+ - powiedl/ticketing-tickets -> powiedl/ticketing-tickets:f2c4a6824b2dfbb2b91ceb8342e10ac14fe78827d14e0f9335b955cfe25ce946
+ - powiedl/ticketing-client -> powiedl/ticketing-client:80817b816ce0db12f47bad583977d9c314baa5db86e8d1e211a06b90ca8c4120
+Starting deploy...
+ - deployment.apps/auth-depl created
+ - service/auth-srv created
+ - deployment.apps/auth-mongo-depl created
+ - service/auth-mongo-srv created
+ - deployment.apps/client-depl created
+ - service/client-srv created
+ - ingress.networking.k8s.io/ingress-srv created
+ - deployment.apps/tickets-depl created
+ - service/tickets-srv created
+ - deployment.apps/tickets-mongo-depl created
+ - service/tickets-mongo-srv created
+Waiting for deployments to stabilize...
+ - deployment/tickets-depl is ready. [4/5 deployment(s) still pending]
+ - deployment/client-depl is ready. [3/5 deployment(s) still pending]
+ - deployment/auth-depl is ready. [2/5 deployment(s) still pending]
+ - deployment/tickets-mongo-depl is ready. [1/5 deployment(s) still pending]
+ - deployment/auth-mongo-depl is ready.
+Deployments stabilized in 4.079 seconds
+Listing files to watch...
+ - powiedl/ticketing-auth
+ - powiedl/ticketing-tickets
+ - powiedl/ticketing-client
+Press Ctrl+C to exit
+Watching for changes...
+[tickets]
+[client]
+[auth]
+[tickets] > tickets@1.0.0 start
+[client] > client@1.0.0 dev
+[auth] > auth@1.0.0 start
+[tickets] > ts-node-dev src/index.ts
+[client] > next
+[auth] > ts-node-dev src/index.ts
+[tickets]
+[client]
+[auth]
+[tickets] [INFO] 03:26:17 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.6.3)
+[auth] [INFO] 03:26:17 ts-node-dev ver. 2.0.0 (using ts-node ver. 10.9.2, typescript ver. 5.6.3)
+[client]    ▲ Next.js 15.0.2
+[client]    - Local:        http://localhost:3000
+[client]
+[client]  ✓ Starting...
+[client] Attention: Next.js now collects completely anonymous telemetry regarding usage.
+[client] This information is used to shape Next.js' roadmap and prioritize features.
+[client] You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+[client] https://nextjs.org/telemetry
+[client]
+[client]  ✓ Ready in 4s
+[client] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies

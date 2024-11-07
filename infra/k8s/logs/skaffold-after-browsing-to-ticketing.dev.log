@@ -1,0 +1,18 @@
+[client]  ○ Compiling / ...
+[auth] connected to mongodb
+[auth] 2024-11-07 03:27:16.535: Auth - Listening on port 3000
+[client]
+[client] > client@1.0.0 dev
+[client] > next
+[client]
+[client]    ▲ Next.js 15.0.2
+[client]    - Local:        http://localhost:3000
+[client]
+[client]  ✓ Starting...
+[client] Attention: Next.js now collects completely anonymous telemetry regarding usage.
+[client] This information is used to shape Next.js' roadmap and prioritize features.
+[client] You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+[client] https://nextjs.org/telemetry
+[client]
+[client]  ✓ Ready in 3.3s
+[client] <w> [webpack.cache.PackFileCacheStrategy] Caching failed for pack: Error: Unable to snapshot resolve dependencies
