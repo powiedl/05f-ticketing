@@ -15,6 +15,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: powiedl/ticketing-tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
     - image: powiedl/ticketing-client
       context: client
       docker:

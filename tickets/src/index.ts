@@ -17,7 +17,7 @@ const start = async () => {
   }
 
   app.listen(3000, () => {
-    console.log(`${formatDate(new Date())}: Auth - Listening on port 3000`);
+    console.log(`${formatDate(new Date())}: Tickets - Listening on port 3000`);
   });
 };
 

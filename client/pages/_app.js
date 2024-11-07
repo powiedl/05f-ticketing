@@ -3,6 +3,7 @@ import buildClient from '../api/build-client';
 import Header from '../components/Header';
 
 const AppComponent = ({ Component, pageProps, currentUser }) => {
+  console.log(`${formatDate(new Date())}: Client - Rendering page...`);
   return (
     <div>
       <Header currentUser={currentUser} />
