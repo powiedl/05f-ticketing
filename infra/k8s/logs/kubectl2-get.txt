@@ -1,0 +1,24 @@
+NAME                                    CLASS   HOSTS           ADDRESS     PORTS   AGE
+ingress.networking.k8s.io/ingress-srv   nginx   ticketing.dev   localhost   80      24m
+
+NAME                                 READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/auth-depl            1/1     1            1           24m
+deployment.apps/auth-mongo-depl      1/1     1            1           24m
+deployment.apps/client-depl          1/1     1            1           24m
+deployment.apps/tickets-depl         1/1     1            1           24m
+deployment.apps/tickets-mongo-depl   1/1     1            1           24m
+
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)     AGE
+service/auth-mongo-srv      ClusterIP   10.110.178.212   <none>        27017/TCP   24m
+service/auth-srv            ClusterIP   10.104.215.111   <none>        3000/TCP    24m
+service/client-srv          ClusterIP   10.108.40.217    <none>        3000/TCP    24m
+service/kubernetes          ClusterIP   10.96.0.1        <none>        443/TCP     11h
+service/tickets-mongo-srv   ClusterIP   10.106.231.151   <none>        27017/TCP   24m
+service/tickets-srv         ClusterIP   10.103.144.90    <none>        3000/TCP    24m
+
+NAME                                     READY   STATUS    RESTARTS      AGE
+pod/auth-depl-5bddd7c748-ddt4g           1/1     Running   0             24m
+pod/auth-mongo-depl-cbc479d7d-6mlrr      1/1     Running   0             24m
+pod/client-depl-66b54dffd6-6g4xj         1/1     Running   1 (23m ago)   24m
+pod/tickets-depl-974747ff-kzxxv          1/1     Running   0             24m
+pod/tickets-mongo-depl-cff5c45b8-njnpk   1/1     Running   0             24m

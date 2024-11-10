@@ -2,17 +2,15 @@ import express from 'express';
 import 'express-async-errors';
 import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
-
-import { createTicketRouter, showTicketRouter } from './routes';
-// import { currentUserRouter } from './routes/current-user';
-// import { signinRouter } from './routes/signin';
-// import { signoutRouter } from './routes/signout';
-// import { signupRouter } from './routes/signup';
 import {
   errorHandler,
   NotFoundError,
   currentUser,
 } from '@powidl2024/common__powidl2024';
+import { createTicketRouter } from './routes/new';
+import { showTicketRouter } from './routes/show';
+import { indexTicketRouter } from './routes/index';
+import { updateTicketRouter } from './routes/update';
 
 const app = express();
 app.set('trust proxy', true);
@@ -20,22 +18,20 @@ app.use(json());
 app.use(
   cookieSession({
     signed: false,
-    secure: process.env.NODE_ENV !== 'test', // secure: true - in "non test" environments, otherwise: false (if it is true, the request must be made to https)
+    secure: process.env.NODE_ENV !== 'test',
   })
 );
 app.use(currentUser);
 
 app.use(createTicketRouter);
 app.use(showTicketRouter);
+app.use(indexTicketRouter);
+app.use(updateTicketRouter);
 
-app.all('/*', async () => {
-  // nach allen bekannten Routen, aber vor dem Errorhandler fügt man diese "catch all" Route hinzu
+app.all('*', async (req, res) => {
   throw new NotFoundError();
 });
 
-app.use(errorHandler); // der Errorhandler muss möglichst nahe am app.listen sein, damit er alle Fehler, die "unterwegs" aufgetreten sind, sieht
-// app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-//   errorHandler(err, req, res, next);
-// });
+app.use(errorHandler);
 
 export { app };

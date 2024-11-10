@@ -2,6 +2,9 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { requireAuth, validateRequest } from '@powidl2024/common__powidl2024';
 import { Ticket } from '../models/ticket';
+import { natsWrapper } from '../nats-wrapper';
+import { TicketCreatedPublisher } from '../events/publishers';
+
 const router = express.Router();
 
 router.post(
@@ -16,14 +19,23 @@ router.post(
   validateRequest,
   async (req: Request, res: Response) => {
     const { title, price } = req.body;
+
     const ticket = Ticket.build({
       title,
       price,
       userId: req.currentUser!.id,
     });
     await ticket.save();
+
+    new TicketCreatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      price: ticket.price,
+      userId: ticket.userId,
+    });
+
     res.status(201).send(ticket);
   }
 );
 
-export default router;
+export { router as createTicketRouter };

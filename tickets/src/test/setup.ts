@@ -1,8 +1,9 @@
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import mongoose from 'mongoose';
 import request from 'supertest';
 import { app } from '../app';
 import jwt from 'jsonwebtoken';
-import { MongoMemoryServer } from 'mongodb-memory-server';
-import mongoose from 'mongoose';
+
 declare global {
   var signin: () => string[];
 }
@@ -21,6 +22,7 @@ beforeAll(async () => {
 beforeEach(async () => {
   if (mongoose.connection.db) {
     const collections = await mongoose.connection.db.collections();
+
     for (let collection of collections) {
       await collection.deleteMany({});
     }
@@ -37,7 +39,7 @@ afterAll(async () => {
 global.signin = () => {
   // Build a JWT payload.  { id, email }
   const payload = {
-    id: '1lk24j124l',
+    id: new mongoose.Types.ObjectId().toHexString(),
     email: 'test@test.com',
   };
 

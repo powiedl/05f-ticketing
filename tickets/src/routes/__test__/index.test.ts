@@ -1,16 +1,19 @@
 import request from 'supertest';
 import { app } from '../../app';
 
-const createTicket = (title: string, price: number) => {
+const createTicket = () => {
   return request(app).post('/api/tickets').set('Cookie', global.signin()).send({
-    title,
-    price,
+    title: 'asldkf',
+    price: 20,
   });
 };
+
 it('can fetch a list of tickets', async () => {
-  createTicket('test', 20).expect(201);
-  createTicket('another test', 30).expect(201);
-  const response = await request(app).post('/api/tickets'); // no title in body
-  expect(response.status).toEqual(200);
-  expect(response.body.length).toEqual(2);
+  await createTicket();
+  await createTicket();
+  await createTicket();
+
+  const response = await request(app).get('/api/tickets').send().expect(200);
+
+  expect(response.body.length).toEqual(3);
 });

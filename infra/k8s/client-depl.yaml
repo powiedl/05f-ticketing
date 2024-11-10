@@ -16,9 +16,12 @@ spec:
         - name: client
           image: powiedl/ticketing-client
           resources:
-            limits:
-              memory: '256Mi'
+            requests:
+              memory: '128Mi'
               cpu: '250m'
+            limits:
+              memory: '512Mi'
+              cpu: '1000m'
 ---
 apiVersion: v1
 kind: Service
