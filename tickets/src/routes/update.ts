@@ -8,7 +8,10 @@ import {
   currentUser,
 } from '@powidl2024/common__powidl2024';
 import { Ticket } from '../models/ticket';
-import { TicketUpdatedPublisher } from '../events/publishers';
+import {
+  TicketUpdatedPublisher,
+  TicketUpdatedPublisherIndependentVersioning,
+} from '../events/publishers';
 import { natsWrapper } from '../nats-wrapper';
 const router = express.Router();
 
@@ -32,19 +35,24 @@ router.put(
     if (ticket.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
-
+    const prevVersion = ticket.version;
     ticket.set({
       title: req.body.title,
       price: req.body.price,
+      version: ticket.version + 1,
     });
     await ticket.save();
-    new TicketUpdatedPublisher(natsWrapper.client).publish({
-      id: ticket.id,
-      version: ticket.version,
-      title: ticket.title,
-      price: ticket.price,
-      userId: ticket.userId,
-    });
+    console.log('updated ticket version', prevVersion, 'to', ticket.version);
+    new TicketUpdatedPublisherIndependentVersioning(natsWrapper.client).publish(
+      {
+        id: ticket.id,
+        version: ticket.version,
+        prevVersion,
+        title: ticket.title,
+        price: ticket.price,
+        userId: ticket.userId,
+      }
+    );
     res.send(ticket);
   }
 );
