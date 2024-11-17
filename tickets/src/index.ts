@@ -26,6 +26,8 @@ const start = async () => {
     console.log('Connected to MongoDb');
   } catch (err) {
     console.error(err);
+    console.log('could not connect to MongoDb, so lets exit ...');
+    process.exit(1);
   }
 
   try {
@@ -43,10 +45,16 @@ const start = async () => {
     console.log('Connected to NATS');
   } catch (err) {
     console.error(err);
+    console.log('could not connect to NATS, so lets exit ...');
+    process.exit(1);
   }
 
   app.listen(3000, () => {
-    console.log(`${formatDate(new Date())}: Tickets - Listening on port 3000`);
+    console.log(
+      `${formatDate(
+        new Date()
+      )}: Tickets (without plugin updateIfCurrent) - Listening on port 3000`
+    );
   });
 };
 

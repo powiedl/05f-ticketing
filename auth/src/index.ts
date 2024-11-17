@@ -14,6 +14,8 @@ const start = async () => {
     console.log('connected to mongodb');
   } catch (err) {
     console.error(err);
+    console.log('could not connect to mongodb, so lets exit ...');
+    process.exit(1);
   }
 
   app.listen(3000, () => {
