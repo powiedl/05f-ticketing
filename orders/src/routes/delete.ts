@@ -5,7 +5,10 @@ import {
   NotFoundError,
   requireAuth,
 } from '@powidl2024/common__powidl2024';
-import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
+import {
+  OrderCancelledPublisher,
+  OrderCancelledPublisherIndependentVersioning,
+} from '../events/publishers/order-cancelled-publisher';
 import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
@@ -22,20 +25,24 @@ router.delete(
     if (order.userId !== req.currentUser!.id) {
       throw new NotAuthorizedError();
     }
-
+    const prevVersion = order.version;
     order.status = OrderStatus.Cancelled;
     await order.save();
 
     // publish an event to say this was cancelled
-    new OrderCancelledPublisher(natsWrapper.client).publish({
+    new OrderCancelledPublisherIndependentVersioning(
+      natsWrapper.client
+    ).publish({
       id: order.id,
       version: order.version,
+      prevVersion,
       ticket: {
         id: order.ticket.id,
       },
     });
+    console.log('order cancelled:', order);
 
-    res.status(204).send(order);
+    res.status(200).send(order); //204 means no content, so you can't send a body with it ...
   }
 );
 

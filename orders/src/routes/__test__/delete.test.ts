@@ -58,11 +58,12 @@ it('marks an order as cancelled', async () => {
     .expect(201);
 
   // try to cancel the order
-  await request(app)
+  const response = await request(app)
     .delete(`/api/orders/${order.id}`) // delete the order
     .set('Cookie', user)
     .send()
     .expect(204);
+  console.log('response deleted', response.body);
 
   const updatedOrder = await Order.findById(order.id);
   expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
