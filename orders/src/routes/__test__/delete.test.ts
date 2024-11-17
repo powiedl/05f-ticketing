@@ -19,6 +19,7 @@ it('can only be accessed if the user is signed in', async () => {
 it('can only cancel an order if the user owns it', async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'concert',
     price: 20,
   });
@@ -44,6 +45,7 @@ it('can only cancel an order if the user owns it', async () => {
 it('marks an order as cancelled', async () => {
   // create a ticket
   const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
     title: 'concert',
     price: 20,
   });
@@ -62,8 +64,35 @@ it('marks an order as cancelled', async () => {
     .delete(`/api/orders/${order.id}`) // delete the order
     .set('Cookie', user)
     .send()
-    .expect(204);
+    .expect(200);
 
   const updatedOrder = await Order.findById(order.id);
   expect(updatedOrder!.status).toEqual(OrderStatus.Cancelled);
+});
+
+it('emits an order cancelled event', async () => {
+  // create a ticket
+  const ticket = Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: 'concert',
+    price: 20,
+  });
+  await ticket.save();
+
+  // make an order associated with this ticket
+  const user = global.signin();
+  const { body: order } = await request(app)
+    .post('/api/orders')
+    .set('Cookie', user) // user is signed in
+    .send({ ticketId: ticket.id })
+    .expect(201);
+
+  // try to cancel the order
+  await request(app)
+    .delete(`/api/orders/${order.id}`) // delete the order
+    .set('Cookie', user)
+    .send()
+    .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });

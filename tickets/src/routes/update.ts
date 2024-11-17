@@ -6,6 +6,7 @@ import {
   requireAuth,
   NotAuthorizedError,
   currentUser,
+  BadRequestError,
 } from '@powidl2024/common__powidl2024';
 import { Ticket } from '../models/ticket';
 import { TicketUpdatedPublisher } from '../events/publishers';
@@ -33,6 +34,11 @@ router.put(
       throw new NotAuthorizedError();
     }
 
+    if (ticket.orderId) {
+      // ticket is reserved, so no edit is allowed
+      throw new BadRequestError('Cannot edit a reserved ticket');
+    }
+
     ticket.set({
       title: req.body.title,
       price: req.body.price,
@@ -40,6 +46,7 @@ router.put(
     await ticket.save();
     new TicketUpdatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
+      version: ticket.version,
       title: ticket.title,
       price: ticket.price,
       userId: ticket.userId,
