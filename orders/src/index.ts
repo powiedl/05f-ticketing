@@ -5,6 +5,7 @@ import { natsWrapper } from './nats-wrapper';
 import { formatDate } from '@powidl2024/common__powidl2024';
 import { TicketCreatedListener } from './events/listeners/ticket-created-listener';
 import { TicketUpdatedListener } from './events/listeners/ticket-updated-listener';
+import { ExpirationCompleteListener } from './events/listeners/expiration-complete-listener';
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
@@ -54,6 +55,7 @@ const start = async () => {
   // start Listening to the incoming events ...
   new TicketCreatedListener(natsWrapper.client).listen();
   new TicketUpdatedListener(natsWrapper.client).listen();
+  new ExpirationCompleteListener(natsWrapper.client).listen();
 
   app.listen(3000, () => {
     console.log(`${formatDate(new Date())}: Orders - Listening on port 3000`);

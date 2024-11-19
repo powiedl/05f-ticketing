@@ -31,6 +31,14 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .
+    - image: powiedl/ticketing-expiration
+      context: expiration
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
     - image: powiedl/ticketing-client
       context: client
       docker:
