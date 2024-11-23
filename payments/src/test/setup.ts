@@ -8,8 +8,6 @@ declare global {
   var signin: (id?: string) => string[];
 }
 
-process.env.STRIPE_KEY =
-  'sk_test_51QNyQjFq4rykGViril43QyB0QQUOJeXd3DOlnupetY2ls7GzhrA0Qz0LlwrYK4mZBsRawuXtIVuXqudyp2mwj77a00inGJ4QFU';
 let mongo: any;
 
 jest.mock('../nats-wrapper.ts');
