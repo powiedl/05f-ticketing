@@ -40,6 +40,13 @@ router.post(
     if (order.status === OrderStatus.Cancelled) {
       throw new BadRequestError('Cannot pay for a cancelled order');
     }
+
+    const existingPayment = await Payment.findOne({ orderId }); // check existing payment
+    console.log('existingPayment?', existingPayment);
+    if (existingPayment) {
+      throw new BadRequestError('Need not to pay again');
+    }
+
     const charge = await stripe.charges.create({
       currency: 'usd',
       amount: order.price * 100,
