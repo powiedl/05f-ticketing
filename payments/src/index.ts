@@ -3,10 +3,9 @@ import mongoose from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
 import { formatDate } from '@powidl2024/common__powidl2024';
-import { TicketCreatedListener } from './events/listeners/ticket-created-listener';
-import { TicketUpdatedListener } from './events/listeners/ticket-updated-listener';
-import { ExpirationCompleteListener } from './events/listeners/expiration-complete-listener';
-import { PaymentCreatedListener } from './events/listeners/payment-created-listener';
+import { OrderCreatedListener } from './events/listeners/order-created-listener';
+import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
+
 const start = async () => {
   if (!process.env.JWT_KEY) {
     throw new Error('JWT_KEY must be defined');
@@ -46,20 +45,17 @@ const start = async () => {
     process.on('SIGINT', () => natsWrapper.client.close());
     process.on('SIGTERM', () => natsWrapper.client.close());
     console.log('Connected to NATS');
+
+    new OrderCreatedListener(natsWrapper.client).listen();
+    new OrderCancelledListener(natsWrapper.client).listen();
   } catch (err) {
     console.error(err);
     console.log('could not connect to NATS, so lets exit ...');
     process.exit(1);
   }
 
-  // start Listening to the incoming events ...
-  new TicketCreatedListener(natsWrapper.client).listen();
-  new TicketUpdatedListener(natsWrapper.client).listen();
-  new ExpirationCompleteListener(natsWrapper.client).listen();
-  new PaymentCreatedListener(natsWrapper.client).listen();
-
   app.listen(3000, () => {
-    console.log(`${formatDate(new Date())}: Orders - Listening on port 3000`);
+    console.log(`${formatDate(new Date())}: Payments - Listening on port 3000`);
   });
 };
 
